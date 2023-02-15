@@ -141,23 +141,34 @@ class Check
      */
     protected $profanities = [];
 
+    protected $whitelist = [];
+
     protected $separatorExpression;
 
     protected $characterExpressions;
 
     /**
-     * @param  null  $config
+     * @param  null|array|string  $config
+     * Can be an array or file name.
      */
-    public function __construct($config = null)
+    public function __construct(array|string $config = null)
     {
         if ($config === null) {
-            $config = data_get(include __DIR__.'/../config/profanity.php', 'blacklist', []);
+            $profanities = data_get(include __DIR__.'/../config/profanity.php', 'blacklist', []);
+
+            $whitelist = data_get(include __DIR__.'/../config/profanity.php', 'whitelist', []);
         }
 
-        if (is_array($config)) {
-            $this->profanities = $config;
+        if (is_array($config) && array_key_exists('blacklist', $config)) {
+            $this->profanities = data_get($config, 'blacklist', []);
         } else {
-            $this->profanities = $this->loadProfanitiesFromFile($config);
+            $this->profanities = data_get($this->loadProfanitiesFromFile($config), 'blacklist', []);
+        }
+
+        if (is_array($config) && array_key_exists('whitelist', $config)) {
+            $this->whitelist = data_get($config, 'whitelist', []);
+        } else {
+            $this->whitelist = data_get($this->loadProfanitiesFromFile($config), 'whitelist', []);
         }
 
         $this->separatorExpression = $this->generateSeparatorExpression();
@@ -167,21 +178,17 @@ class Check
     /**
      * Load 'profanities' from config file.
      *
-     *
      * @return array
      */
     private function loadProfanitiesFromFile($config)
     {
-        /** @noinspection PhpIncludeInspection */
         return include $config;
     }
 
     /**
      * Generates the separator regular expression.
-     *
-     * @return string
      */
-    private function generateSeparatorExpression()
+    private function generateSeparatorExpression(): string
     {
         return $this->generateEscapedExpression($this->separatorCharacters, $this->escapedSeparatorCharacters);
     }
@@ -226,11 +233,8 @@ class Check
 
     /**
      * Obfuscates string that contains a 'profanity'.
-     *
-     *
-     * @return string
      */
-    public function obfuscateIfProfane($string)
+    public function obfuscateIfProfane($string): string
     {
         if ($this->hasProfanity($string)) {
             $string = str_repeat('*', strlen($string));
@@ -241,11 +245,8 @@ class Check
 
     /**
      * Checks string for profanities based on list 'profanities'
-     *
-     *
-     * @return bool
      */
-    public function hasProfanity($string)
+    public function hasProfanity($string): bool
     {
         if (empty($string)) {
             return false;
@@ -262,9 +263,16 @@ class Check
             );
         }
 
-        foreach ($profanities as $profanity) {
-            if ($this->stringHasProfanity($string, $profanity)) {
-                return true;
+        // Explode the string and preform
+        // the profanity check for each word in the string.
+        foreach (explode(' ', $string) as $word) {
+            // Check if the 'word' has any profanity in it.
+            // If the word has profanity return whether it is
+            // present in the array or not.
+            foreach ($profanities as $profanity) {
+                if ($this->stringHasProfanity($word, $profanity)) {
+                    return ! in_array($word, $this->whitelist);
+                }
             }
         }
 
@@ -274,7 +282,7 @@ class Check
     /**
      * Generate a regular expression for a particular word
      */
-    protected function generateProfanityExpression($word, $characterExpressions, $separatorExpression)
+    protected function generateProfanityExpression($word, $characterExpressions, $separatorExpression): array|string
     {
         $expression = '/'.preg_replace(
             array_keys($characterExpressions),
