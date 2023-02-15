@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Tests;
 
 use DeveloperDino\ProfanityFilter\Check;
@@ -38,7 +37,7 @@ class ProfanityFilterTest extends TestCase
 
     public function testLoadCustomWordsFromFile()
     {
-        $check = new Check(__DIR__ . '/profanities.php');
+        $check = new Check(__DIR__.'/profanities.php');
         $this->assertTrue($check->hasProfanity('this sentence is dirty'));
         $this->assertFalse($check->hasProfanity('but this one is clean'));
     }

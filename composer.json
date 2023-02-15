@@ -1,13 +1,38 @@
 {
+    "name": "owowagency/laravel-profanity-validation",
+    "description": "Filters out profanities from strings using validation.",
+    "license": "MIT",
     "authors": [
+        {
+            "name": "Amine Farhaoui",
+            "email": "amine@owow.io"
+        },
+        {
+            "name": "Dees Oomens",
+            "email": "dees@owow.io"
+        },
         {
             "name": "Dean Tedesco",
             "email": "dino@tedesco.net.au"
         }
     ],
+    "require": {
+        "php": ">=8.1",
+        "laravel/framework": "^9.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0",
+        "laravel/pint": "^1.5"
+    },
+    "scripts": {
+        "lint": "pint --test",
+        "lint:fix": "pint",
+        "test": "phpunit",
+        "test:u": "phpunit -d --update-snapshots"
+    },
     "autoload": {
         "psr-4": {
-            "DeveloperDino\\ProfanityFilter\\": "src"
+            "OwowAgency\\ProfanityValidation\\": "src"
         }
     },
     "autoload-dev": {
@@ -15,23 +40,11 @@
             "Tests\\": "tests"
         }
     },
-    "description": "Filters out profanities from strings.",
-    "license": "MIT",
-    "name": "developerdino/profanity-filter",
-    "require": {
-        "php": ">=7.2"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "~9.0"
-    },
-    "scripts": {
-        "test": [
-            "@unitTest"
-        ],
-        "unitTest": "phpunit tests"
-    },
-    "scripts-descriptions": {
-        "test": "Run all the tests!",
-        "unitTest": "Run PHP Unit tests!"
+    "extra": {
+        "laravel": {
+            "providers": [
+                "OwowAgency\\ProfanityValidation\\ServiceProvider"
+            ]
+        }
     }
 }

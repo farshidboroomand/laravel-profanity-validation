@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-
 use Generator;
 
 class CheckTest extends TestCase
@@ -12,7 +11,7 @@ class CheckTest extends TestCase
      */
     public function itDetectsACleanString()
     {
-        $this->assertFalse($this->checker->hasProfanity("clean string"));
+        $this->assertFalse($this->checker->hasProfanity('clean string'));
     }
 
     /**
@@ -20,7 +19,7 @@ class CheckTest extends TestCase
      */
     public function itDetectsBlankStringAndReturnsFalse()
     {
-        $this->assertFalse($this->checker->hasProfanity(""));
+        $this->assertFalse($this->checker->hasProfanity(''));
     }
 
     /**
@@ -36,7 +35,7 @@ class CheckTest extends TestCase
      */
     public function itDetectsUppercaseProfanityInString()
     {
-        $this->assertTrue($this->checker->hasProfanity("youraCUNTface"));
+        $this->assertTrue($this->checker->hasProfanity('youraCUNTface'));
     }
 
     /**
@@ -44,7 +43,7 @@ class CheckTest extends TestCase
      */
     public function itDetectsProfanityWithUSubstitutedWithÚInProfanity()
     {
-        $this->assertTrue($this->checker->hasProfanity("fúck"));
+        $this->assertTrue($this->checker->hasProfanity('fúck'));
     }
 
     /**
@@ -52,7 +51,7 @@ class CheckTest extends TestCase
      */
     public function itDetectsProfanityWithAllSubstitutedCharacters()
     {
-        $this->assertTrue($this->checker->hasProfanity("ƒüćκ"));;
+        $this->assertTrue($this->checker->hasProfanity('ƒüćκ'));
     }
 
     /**
@@ -60,7 +59,7 @@ class CheckTest extends TestCase
      */
     public function itDetectsProfanityWithAllCharactersDoubledAndSubstituted()
     {
-        $this->assertTrue($this->checker->hasProfanity("ƒƒüüććκκ"));
+        $this->assertTrue($this->checker->hasProfanity('ƒƒüüććκκ'));
     }
 
     /**
@@ -68,7 +67,7 @@ class CheckTest extends TestCase
      */
     public function itDetectsProfanityWithSpacesBetween()
     {
-        $this->assertTrue($this->checker->hasProfanity("c u n t"));
+        $this->assertTrue($this->checker->hasProfanity('c u n t'));
     }
 
     /**
@@ -100,7 +99,7 @@ class CheckTest extends TestCase
      */
     public function itDetectsProfanityWithDoubleDashesBetweenCharacters()
     {
-        $this->assertTrue($this->checker->hasProfanity("c--u--n--t"));
+        $this->assertTrue($this->checker->hasProfanity('c--u--n--t'));
     }
 
     /**
@@ -108,20 +107,20 @@ class CheckTest extends TestCase
      */
     public function itDetectsProfanityWithDashEqualsBetweenCharacters()
     {
-        $this->assertTrue($this->checker->hasProfanity("c-=u-=n-=t"));
+        $this->assertTrue($this->checker->hasProfanity('c-=u-=n-=t'));
     }
 
     /**
      * @dataProvider spacers
+     *
      * @test
-     * @param string $spacer
      */
     public function itDetectsProfanityWithAllPunctuationBetweenCharacters(string $spacer)
     {
         $this->assertTrue($this->checker->hasProfanity("c{$spacer}u{$spacer}n{$spacer}t"));
         $this->assertTrue($this->checker->hasProfanity("c{$spacer}{$spacer}u{$spacer}{$spacer}n{$spacer}{$spacer}t"));
         $this->assertTrue(
-            $this->checker->hasProfanity("cc{$spacer}{$spacer}uu{$spacer}{$spacer}nn{$spacer}{$spacer}tt")
+            $this->checker->hasProfanity("cc{$spacer}{$spacer}uu{$spacer}{$spacer}nn{$spacer}{$spacer}tt"),
         );
     }
 
@@ -130,7 +129,7 @@ class CheckTest extends TestCase
      */
     public function itObfuscatesAStringThatContainsAProfanity()
     {
-        $this->assertEquals('****', $this->checker->obfuscateIfProfane("cunt"));
+        $this->assertEquals('****', $this->checker->obfuscateIfProfane('cunt'));
     }
 
     /**
@@ -138,10 +137,10 @@ class CheckTest extends TestCase
      */
     public function itDoesNotDetectAsAsAProfanity()
     {
-        $this->assertFalse($this->checker->hasProfanity("as"));
-        $this->assertFalse($this->checker->hasProfanity("a.s."));
-        $this->assertFalse($this->checker->hasProfanity("a s"));
-        $this->assertFalse($this->checker->hasProfanity("a .s ."));
+        $this->assertFalse($this->checker->hasProfanity('as'));
+        $this->assertFalse($this->checker->hasProfanity('a.s.'));
+        $this->assertFalse($this->checker->hasProfanity('a s'));
+        $this->assertFalse($this->checker->hasProfanity('a .s .'));
     }
 
     /**
@@ -149,8 +148,8 @@ class CheckTest extends TestCase
      */
     public function itDoesDetectAssAsAProfanity()
     {
-        $this->assertTrue($this->checker->hasProfanity("ass"));
-        $this->assertTrue($this->checker->hasProfanity("a s s "));
+        $this->assertTrue($this->checker->hasProfanity('ass'));
+        $this->assertTrue($this->checker->hasProfanity('a s s '));
         $this->assertTrue($this->checker->hasProfanity("a 's [s ["));
         $this->assertTrue($this->checker->hasProfanity("a$ 's$ [s$ ["));
     }
@@ -160,8 +159,8 @@ class CheckTest extends TestCase
      */
     public function itDoesDetectProfanitiesInDirtyWordsWithSpacesBetweenLetters()
     {
-        $this->assertTrue($this->checker->hasProfanity("c u n t"));
-        $this->assertTrue($this->checker->hasProfanity("f  u  c  k"));
+        $this->assertTrue($this->checker->hasProfanity('c u n t'));
+        $this->assertTrue($this->checker->hasProfanity('f  u  c  k'));
     }
 
     /**
@@ -169,13 +168,10 @@ class CheckTest extends TestCase
      */
     public function itDoesNotDetectProfanitiesInCleanStringsWithSpacesBetweenLetters()
     {
-        $this->assertFalse($this->checker->hasProfanity("r i g h t"));
-        $this->assertFalse($this->checker->hasProfanity("h e l l o"));
+        $this->assertFalse($this->checker->hasProfanity('r i g h t'));
+        $this->assertFalse($this->checker->hasProfanity('h e l l o'));
     }
 
-    /**
-     * @return Generator
-     */
     public function spacers(): Generator
     {
         yield [' '];

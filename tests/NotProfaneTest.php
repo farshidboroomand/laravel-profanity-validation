@@ -6,8 +6,8 @@ class NotProfaneTest extends TestCase
 {
     /**
      * @dataProvider phrases
+     *
      * @test
-     * @param string $phrase
      */
     public function shouldNotTestPositiveToProfanity(string $phrase)
     {

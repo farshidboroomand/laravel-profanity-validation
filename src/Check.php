@@ -1,6 +1,6 @@
 <?php
 
-namespace DeveloperDino\ProfanityFilter;
+namespace OwowAgency\ProfanityValidation;
 
 class Check
 {
@@ -15,6 +15,7 @@ class Check
 
     /**
      * Unescaped separator characters.
+     *
      * @var array
      */
     protected $separatorCharacters = [
@@ -50,7 +51,6 @@ class Check
         '.',
         '/',
     ];
-
 
     /**
      * List of potential character substitutions as a regular expression.
@@ -140,16 +140,18 @@ class Check
      * @var array
      */
     protected $profanities = [];
+
     protected $separatorExpression;
+
     protected $characterExpressions;
 
     /**
-     * @param null $config
+     * @param  null  $config
      */
     public function __construct($config = null)
     {
         if ($config === null) {
-            $config = __DIR__ . '/../config/profanities.php';
+            $config = __DIR__.'/../config/profanities.php';
         }
 
         if (is_array($config)) {
@@ -165,14 +167,13 @@ class Check
     /**
      * Load 'profanities' from config file.
      *
-     * @param $config
      *
      * @return array
      */
     private function loadProfanitiesFromFile($config)
     {
         /** @noinspection PhpIncludeInspection */
-        return include($config);
+        return include $config;
     }
 
     /**
@@ -188,23 +189,20 @@ class Check
     /**
      * Generates the separator regex to test characters in between letters.
      *
-     * @param array $characters
-     * @param array $escapedCharacters
-     * @param string $quantifier
-     *
+     * @param  string  $quantifier
      * @return string
      */
     private function generateEscapedExpression(
         array $characters = [],
         array $escapedCharacters = [],
-        $quantifier = '*?'
+        $quantifier = '*?',
     ) {
         $regex = $escapedCharacters;
         foreach ($characters as $character) {
             $regex[] = preg_quote($character, '/');
         }
 
-        return '[' . implode('', $regex) . ']' . $quantifier;
+        return '['.implode('', $regex).']'.$quantifier;
     }
 
     /**
@@ -217,10 +215,10 @@ class Check
         $characterExpressions = [];
         foreach ($this->characterSubstitutions as $character => $substitutions) {
             $characterExpressions[$character] = $this->generateEscapedExpression(
-                    $substitutions,
-                    [],
-                    '+?'
-                ) . self::SEPARATOR_PLACEHOLDER;
+                $substitutions,
+                [],
+                '+?',
+            ).self::SEPARATOR_PLACEHOLDER;
         }
 
         return $characterExpressions;
@@ -229,14 +227,13 @@ class Check
     /**
      * Obfuscates string that contains a 'profanity'.
      *
-     * @param $string
      *
      * @return string
      */
     public function obfuscateIfProfane($string)
     {
         if ($this->hasProfanity($string)) {
-            $string = str_repeat("*", strlen($string));
+            $string = str_repeat('*', strlen($string));
         }
 
         return $string;
@@ -245,7 +242,6 @@ class Check
     /**
      * Checks string for profanities based on list 'profanities'
      *
-     * @param $string
      *
      * @return bool
      */
@@ -262,7 +258,7 @@ class Check
             $profanities[$i] = $this->generateProfanityExpression(
                 $this->profanities[$i],
                 $this->characterExpressions,
-                $this->separatorExpression
+                $this->separatorExpression,
             );
         }
 
@@ -277,20 +273,14 @@ class Check
 
     /**
      * Generate a regular expression for a particular word
-     *
-     * @param $word
-     * @param $characterExpressions
-     * @param $separatorExpression
-     *
-     * @return mixed
      */
     protected function generateProfanityExpression($word, $characterExpressions, $separatorExpression)
     {
-        $expression = '/' . preg_replace(
-                array_keys($characterExpressions),
-                array_values($characterExpressions),
-                $word
-            ) . '/i';
+        $expression = '/'.preg_replace(
+            array_keys($characterExpressions),
+            array_values($characterExpressions),
+            $word,
+        ).'/i';
 
         return str_replace(self::SEPARATOR_PLACEHOLDER, $separatorExpression, $expression);
     }
@@ -298,8 +288,6 @@ class Check
     /**
      * Checks a string against a profanity.
      *
-     * @param $string
-     * @param $profanity
      *
      * @return bool
      */
