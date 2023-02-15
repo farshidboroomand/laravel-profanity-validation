@@ -271,7 +271,7 @@ class Check
             // present in the array or not.
             foreach ($profanities as $profanity) {
                 if ($this->stringHasProfanity($word, $profanity)) {
-                    return ! in_array($word, $this->whitelist);
+                    return ! in_array(strtolower($word), $this->whitelist);
                 }
             }
         }
