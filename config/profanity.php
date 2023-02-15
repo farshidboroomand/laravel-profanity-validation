@@ -1304,5 +1304,7 @@ return [
         'zipperhea',
         'zipper head',
     ],
-
+    'whitelist' => [
+        'competition',
+    ],
 ];
