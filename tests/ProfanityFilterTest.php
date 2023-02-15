@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use DeveloperDino\ProfanityFilter\Check;
+use OwowAgency\ProfanityValidation\Check;
 
 /**
  * Description of ProfanityFilterTest

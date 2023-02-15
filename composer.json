@@ -27,8 +27,8 @@
     "scripts": {
         "lint": "pint --test",
         "lint:fix": "pint",
-        "test": "phpunit",
-        "test:u": "phpunit -d --update-snapshots"
+        "test": "phpunit ./tests",
+        "test:u": "phpunit ./tests -d --update-snapshots"
     },
     "autoload": {
         "psr-4": {
