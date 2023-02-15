@@ -151,7 +151,7 @@ class Check
     public function __construct($config = null)
     {
         if ($config === null) {
-            $config = __DIR__.'/../config/profanities.php';
+            $config = data_get(include __DIR__.'/../config/profanity.php', 'blacklist', []);
         }
 
         if (is_array($config)) {
