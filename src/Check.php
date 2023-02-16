@@ -172,9 +172,9 @@ class Check
         }
 
         if (is_array($whitelist)) {
-            $this->profanities = $whitelist;
+            $this->whitelist = $whitelist;
         } else {
-            $this->profanities = data_get($this->loadProfanitiesFromFile($whitelist), 'whitelist', []);
+            $this->whitelist = data_get($this->loadProfanitiesFromFile($whitelist), 'whitelist', []);
         }
 
         $this->separatorExpression = $this->generateSeparatorExpression();
