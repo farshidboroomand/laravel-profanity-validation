@@ -158,23 +158,23 @@ class Check
     public function __construct(array|string $profanities = null, array|string $whitelist = null)
     {
         if ($profanities === null) {
-            $profanities = include __DIR__.'/../config/profanities.php';
+            $profanities = data_get(include __DIR__.'/../config/profanities.php', 'blacklist', []);
         }
 
         if ($whitelist === null) {
-            $whitelist = include __DIR__.'/../config/whitelist.php';
+            $whitelist = data_get(include __DIR__.'/../config/profanities.php', 'whitelist', []);
         }
 
         if (is_array($profanities)) {
             $this->profanities = $profanities;
         } else {
-            $this->profanities = $this->loadProfanitiesFromFile($profanities);
+            $this->profanities = data_get($this->loadProfanitiesFromFile($profanities), 'blacklist', []);
         }
 
         if (is_array($whitelist)) {
             $this->profanities = $whitelist;
         } else {
-            $this->profanities = $this->loadProfanitiesFromFile($whitelist);
+            $this->profanities = data_get($this->loadProfanitiesFromFile($whitelist), 'whitelist', []);
         }
 
         $this->separatorExpression = $this->generateSeparatorExpression();
