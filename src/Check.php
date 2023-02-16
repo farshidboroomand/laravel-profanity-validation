@@ -148,39 +148,44 @@ class Check
     protected $characterExpressions;
 
     /**
-     * @param  null|array|string  $config
-     * Can be an array or file name.
+     * Create and Check instance
+     *
+     * @param  null|array|string  $profanities
+     * Can be an array or file path.
+     * @param  null|array|string  $whitelist
+     * Can be an array or file path.
      */
-    public function __construct(array|string $config = null)
+    public function __construct(array|string $profanities = null, array|string $whitelist = null)
     {
-        if ($config === null) {
-            $profanities = data_get(include __DIR__.'/../config/profanity.php', 'blacklist', []);
-
-            $whitelist = data_get(include __DIR__.'/../config/profanity.php', 'whitelist', []);
+        if ($profanities === null) {
+            $profanities = include __DIR__.'/../config/profanities.php';
         }
 
-        if (is_array($config) && array_key_exists('blacklist', $config)) {
-            $this->profanities = data_get($config, 'blacklist', []);
-        } else {
-            $this->profanities = data_get($this->loadProfanitiesFromFile($config), 'blacklist', []);
+        if ($whitelist === null) {
+            $whitelist = include __DIR__.'/../config/whitelist.php';
         }
 
-        if (is_array($config) && array_key_exists('whitelist', $config)) {
-            $this->whitelist = data_get($config, 'whitelist', []);
+        if (is_array($profanities)) {
+            $this->profanities = $profanities;
         } else {
-            $this->whitelist = data_get($this->loadProfanitiesFromFile($config), 'whitelist', []);
+            $this->profanities = $this->loadProfanitiesFromFile($profanities);
+        }
+
+        if (is_array($whitelist)) {
+            $this->profanities = $whitelist;
+        } else {
+            $this->profanities = $this->loadProfanitiesFromFile($whitelist);
         }
 
         $this->separatorExpression = $this->generateSeparatorExpression();
+
         $this->characterExpressions = $this->generateCharacterExpressions();
     }
 
     /**
      * Load 'profanities' from config file.
-     *
-     * @return array
      */
-    private function loadProfanitiesFromFile($config)
+    private function loadProfanitiesFromFile($config): array
     {
         return include $config;
     }
@@ -196,13 +201,12 @@ class Check
     /**
      * Generates the separator regex to test characters in between letters.
      *
-     * @param  string  $quantifier
      * @return string
      */
     private function generateEscapedExpression(
         array $characters = [],
         array $escapedCharacters = [],
-        $quantifier = '*?',
+        string $quantifier = '*?',
     ) {
         $regex = $escapedCharacters;
         foreach ($characters as $character) {
@@ -214,10 +218,8 @@ class Check
 
     /**
      * Generates a list of regular expressions for each character substitution.
-     *
-     * @return array
      */
-    protected function generateCharacterExpressions()
+    protected function generateCharacterExpressions(): array
     {
         $characterExpressions = [];
         foreach ($this->characterSubstitutions as $character => $substitutions) {
@@ -295,11 +297,8 @@ class Check
 
     /**
      * Checks a string against a profanity.
-     *
-     *
-     * @return bool
      */
-    private function stringHasProfanity($string, $profanity)
+    private function stringHasProfanity($string, $profanity): bool
     {
         return preg_match($profanity, $string) === 1;
     }
