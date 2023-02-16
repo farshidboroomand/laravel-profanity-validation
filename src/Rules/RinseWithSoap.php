@@ -18,7 +18,7 @@ class RinseWithSoap implements InvokableRule
      */
     public function __invoke($attribute, $value, $fail): void
     {
-        $profanityFilter = new Check(config('profanity'));
+        $profanityFilter = new Check(config('profanities'), config('whitelist'));
 
         if ($profanityFilter->hasProfanity($value)) {
             $fail(__('auth.validation.profanity'));
