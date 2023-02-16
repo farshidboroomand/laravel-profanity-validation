@@ -158,11 +158,11 @@ class Check
     public function __construct(array|string $profanities = null, array|string $whitelist = null)
     {
         if ($profanities === null) {
-            $profanities = data_get(include __DIR__.'/../config/profanities.php', 'blacklist', []);
+            $profanities = data_get(include __DIR__ . '/../config/profanity.php', 'blacklist', []);
         }
 
         if ($whitelist === null) {
-            $whitelist = data_get(include __DIR__.'/../config/profanities.php', 'whitelist', []);
+            $whitelist = data_get(include __DIR__ . '/../config/profanity.php', 'whitelist', []);
         }
 
         if (is_array($profanities)) {
