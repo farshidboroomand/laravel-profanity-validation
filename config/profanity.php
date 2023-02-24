@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'blacklist' => [
         'abbo',
         'abortionist',
