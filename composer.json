@@ -38,5 +38,6 @@
                 "Farshidboroomand\\ProfanityValidation\\ServiceProvider"
             ]
         }
-    }
+    },
+    "minimum-stability": "stable"
 }
