@@ -29,7 +29,7 @@ Also works with combinations of the above. E.g. `b|â|d|Ψ|0|rr|d`
 Install this package via composer.
 
 ```
-php composer.phar require developer/profanity-filter
+php composer.phar require farshidborooand/laravel-profanity-validation
 ```
 
 ## Usage
