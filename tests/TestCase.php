@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use OwowAgency\ProfanityValidation\Check;
+use Farshidboroomand\ProfanityValidation\Check;
 use PHPUnit\Framework\TestCase as PhpUnitTestCase;
 
 class TestCase extends PhpUnitTestCase

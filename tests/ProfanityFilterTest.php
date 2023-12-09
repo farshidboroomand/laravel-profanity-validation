@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use OwowAgency\ProfanityValidation\Check;
+use Farshidboroomand\ProfanityValidation\Check;
 
 /**
  * Description of ProfanityFilterTest

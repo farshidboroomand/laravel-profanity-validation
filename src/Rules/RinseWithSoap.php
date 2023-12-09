@@ -1,11 +1,11 @@
 <?php
 
-namespace OwowAgency\ProfanityValidation\Rules;
+namespace Farshidboroomand\ProfanityValidation\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\InvokableRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
-use OwowAgency\ProfanityValidation\Check;
+use Farshidboroomand\ProfanityValidation\Check;
 
 class RinseWithSoap implements InvokableRule
 {

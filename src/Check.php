@@ -1,6 +1,6 @@
 <?php
 
-namespace OwowAgency\ProfanityValidation;
+namespace Farshidboroomand\ProfanityValidation;
 
 class Check
 {

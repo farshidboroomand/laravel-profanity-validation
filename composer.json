@@ -1,23 +1,15 @@
 {
-    "name": "owowagency/laravel-profanity-validation",
+    "name": "farshidboroomand/laravel-profanity-validation",
     "description": "Filters out profanities from strings using validation.",
     "license": "MIT",
     "authors": [
         {
-            "name": "Amine Farhaoui",
-            "email": "amine@owow.io"
-        },
-        {
-            "name": "Dees Oomens",
-            "email": "dees@owow.io"
-        },
-        {
-            "name": "Dean Tedesco",
-            "email": "dino@tedesco.net.au"
+            "name": "Farshid Boroomand",
+            "email": "farshidboroomand@gmail.com"
         }
     ],
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.0",
         "laravel/framework": "^9.0|^10.0"
     },
     "require-dev": {
@@ -32,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "OwowAgency\\ProfanityValidation\\": "src"
+            "Farshidboroomand\\ProfanityValidation\\": "src"
         }
     },
     "autoload-dev": {
@@ -43,7 +35,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "OwowAgency\\ProfanityValidation\\ServiceProvider"
+                "Farshidboroomand\\ProfanityValidation\\ServiceProvider"
             ]
         }
     }
